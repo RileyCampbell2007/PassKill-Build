@@ -222,6 +222,73 @@ Pin-Priority: 501
             sys.exit(1)
 
 
+        print('[CHROOT] Disabling GDM and enabling getty on tty1...')
+        try:
+            subprocess.run(['systemctl', 'disable', 'gdm.service'], check=True)
+            subprocess.run(['systemctl', 'unmask', 'getty@tty1.tty'], check=True)
+            subprocess.run(['systemctl', 'enable', 'getty@tty1.tty'], check=True)
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to disable GDM and enable getty on tty1.")
+            sys.exit(1)
+
+
+        print('[CHROOT] Creating systemd preset for getty@tty1...')
+        try:
+            os.makedirs('/etc/systemd/system-preset', exist_ok=True)
+            open('/etc/systemd/system-preset/00-force-getty.preset','w').write("""
+enable getty@tty1.service
+""".strip())
+
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to create systemd preset for getty@tty1.")
+            sys.exit(1)
+        
+
+        print('[CHROOT] Force unmasking getty@tty1.service...')
+        try:
+            subprocess.run(['systemctl', 'disable', 'getty@tty1.service'], check=True)
+            subprocess.run(['ln', '-s', '/lib/systemd/system/getty@.service', '/etc/systemd/system/getty@tty1.service'], check=True)
+            subprocess.run(['ln', '-s', '/lib/systemd/system/getty@.service', '/lib/systemd/system/getty@tty1.service'], check=True)
+            subprocess.run(['systemctl', 'enable', 'getty@tty1.service'], check=True)
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to force unmask getty@tty1.service.")
+            sys.exit(1)
+        
+
+        print('[CHROOT] Creating systemd service to restart getty@tty1 after GDM stops...')
+        try:
+            open('/etc/systemd/system/wait-gdm-restart-getty.service', 'w').write("""
+[Unit]
+Description=Restart getty@tty1 after GDM stops
+After=gdm.service
+Requires=systemd-logind.service
+
+[Service]
+ExecStart=/bin/bash -c "while true; do while ! systemctl is-active --quiet gdm.service; do sleep 1; done; while systemctl is-active --quiet gdm.service; do sleep 1; done; echo 'GDM stopped, restarting getty@tty1'; systemctl restart getty@tty1.service; echo 'getty@tty1 restarted'; done"
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+""".strip())
+            subprocess.run(['systemctl', 'enable', 'wait-gdm-restart-getty.service'], check=True)
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to create systemd service to restart getty@tty1 after GDM stops.")
+            sys.exit(1)
+
+
+        print('[CHROOT] Setting up getty autologin for UID 1000 user on all ttys...')
+        os.makedirs('/etc/systemd/system/getty@.service.d', exist_ok=True)
+        open('/etc/systemd/system/getty@.service.d/override.conf','w').write("""
+[Service]
+ExecStart=
+ExecStart=-/bin/bash -c "/sbin/agetty --autologin $(getent passwd 1000 | cut -d: -f1) --noclear %I $TERM"
+""".strip())
+
+
         print('[CHROOT] Setting up plymouth...')
         try:
             subprocess.run(['update-alternatives', '--install', '/usr/share/plymouth/themes/default.plymouth', 'default.plymouth', '/usr/share/plymouth/themes/passkill/passkill.plymouth', '10'], check=True)
