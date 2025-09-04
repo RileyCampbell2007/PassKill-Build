@@ -32,6 +32,7 @@ APT_CACHE=os.path.join(os.getcwd(), ".apt-cache")
 APT_LISTS=os.path.join(os.getcwd(), ".apt-lists")
 ISO_VOLID=f"PassKill-{DATE}"
 OUTPUT=os.path.join(os.getcwd(), "build", f"PassKill-{DATE}.iso")
+MD5_OUTPUT=os.path.join(os.getcwd(), "build", f"PassKill-{DATE}.iso.md5")
 
 
 os.makedirs(APT_CACHE, exist_ok=True)
@@ -205,13 +206,19 @@ deb-src http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME}-updates main re
                     "/isolinux/efiboot.img=isolinux/efiboot.img",
                     "."
         ], check=True, cwd=IMAGE_DIR)
-
     except:
         traceback.print_exc()
         print("[X] Failed to create ISO")
         sys.exit(1)
+
     
-        
+    print("[*] Creating md5 hash file...")
+    try:
+        subprocess.run(["md5sum", OUTPUT], check=True, stdout=open(MD5_OUTPUT, "w"))
+    except:
+        traceback.print_exc()
+        print("[X] Failed to create md5 hash file, skipping...")
+        # MD5 is not needed
         
 
 except Exception as e:
@@ -250,5 +257,5 @@ finally:
         else:
             shutil.rmtree(CHROOT_DIR)
 
-print(f"[✓] Build complete in {time.time() - delta:.2f} seconds!")
+print(f"[✓] Build complete in {time.time() - delta:.2f} seconds! Output: {OUTPUT}")
 sys.exit(0)
