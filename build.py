@@ -88,6 +88,8 @@ deb-src http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME}-updates main re
         subprocess.run(["cp", "chroot.py", os.path.join(CHROOT_DIR, "chroot.py")], check=True)
         os.makedirs(os.path.join(CHROOT_DIR, "usr", "share", "plymouth", "themes"), exist_ok=True)
         subprocess.run(["cp", "-r", os.path.join(os.getcwd(), "plymouth"), os.path.join(CHROOT_DIR, "usr", "share", "plymouth", "themes", "passkill")], check=True)
+        os.makedirs(os.path.join(CHROOT_DIR, 'usr', 'share', 'icons'), exist_ok=True)
+        subprocess.run(["cp", os.path.join(os.getcwd(), 'exit_gnome.png'), os.path.join(CHROOT_DIR, 'usr', 'share', 'icons', 'exit_gnome.png')], check=True)
         subprocess.run(["chown", "-R", "root:root", os.path.join(CHROOT_DIR, "usr", "share", "plymouth", "themes", "passkill")], check=True)
 
         DEV_DIR = os.path.join(CHROOT_DIR, "dev")

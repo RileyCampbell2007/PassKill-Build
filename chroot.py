@@ -180,6 +180,29 @@ Pin-Priority: 501
             sys.exit(1)
 
 
+        print('[CHROOT] Pulling PassKill...')
+        try:
+            subprocess.run(['git', 'clone', 'https://github.com/RileyCampbell2007/PassKill.git', '/passkill'])
+            subprocess.run(['chown', '-R', '1000:1000', '/passkill'])
+            subprocess.run(['chmod', '-R', '755', '/passkill'])
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to pull PassKill.")
+            sys.exit(1)
+        
+
+        print('[CHROOT] Installing PassKill dependencies...')
+        try:
+            try:
+                subprocess.run(['pip', 'install', 'whiptail-dialogs', '--break-system-packages'], check=True)
+            except:
+                subprocess.run(['pip', 'install', 'whiptail-dialogs'], check=True)
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to install PassKill dependencies.")
+            sys.exit(1)
+
+
         print('[CHROOT] Building ntfs-3g-system-compression...')
         try:
             BUILD_DEPS = ['autoconf', 'automake', 'libtool', 'pkg-config', 'ntfs-3g-dev', 'libfuse-dev', 'build-essential']
@@ -287,6 +310,48 @@ WantedBy=multi-user.target
 ExecStart=
 ExecStart=-/bin/bash -c "/sbin/agetty --autologin $(getent passwd 1000 | cut -d: -f1) --noclear %I $TERM"
 """.strip())
+        
+
+        print('[CHROOT] Setting up Exit Gnome shortcut...')
+        try:
+            os.makedirs('/etc/skel/Desktop', exist_ok=True)
+            open('/etc/skel/Desktop/Exit Gnome.desktop', 'w').write("""
+[Desktop Entry]
+Name=Exit Gnome
+Exec=/bin/bash -c 'zenity --question --title "Exit Gnome" --text "Exiting Gnome will also close any open windows.\\nAre you sure you want to exit Gnome?" && sudo systemctl stop gdm.service'
+Comment=Gracefully exit the Gnome session
+Terminal=false
+Icon=/usr/share/icons/exit_gnome.png
+Type=Application
+""".strip())
+            subprocess.run(['chmod', '+x', '/etc/skel/Desktop/Exit Gnome.desktop'], check=True)
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to set up Exit Gnome shortcut.")
+            sys.exit(1)
+        
+
+        print('[CHROOT] Registering .bashrc...')
+        try:
+            open('/etc/skel/.bashrc', 'w').write("""
+# Trust the Exit Gnome shortcut if it exists
+if [ -f "$HOME/Desktop/Exit Gnome.desktop" ]; then
+  gio set "$HOME/Desktop/Exit Gnome.desktop" "metadata::trusted" true 2>/dev/null || true
+fi
+
+# Launch PassKill on tty1 when the "PASSKILL" environment variable is not set
+if [ -z "$PASSKILL" ]; then
+    if [[ "$(tty)" == "/dev/tty1" ]]; then
+        PASSKILL="value"
+        cd /passkill/
+        sudo /usr/bin/env python3 /passkill/main.py
+    fi
+fi
+""".strip())
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to register .bashrc.")
+            sys.exit(1)
 
 
         print('[CHROOT] Setting up plymouth...')
