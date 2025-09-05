@@ -14,7 +14,7 @@ except ImportError as e:
         exit(1)
 
 
-APT_OPTIONS = ['-y','-o', 'Dpkg::Options::=--force-confold']
+APT_OPTIONS = ['-y']
 
 GENERIC_PACKAGES = ['ubuntu-standard', 'sudo', 'linux-image-6.14.0-27-generic'] # The kernel is pinned to 6.14.0-27-generic because 6.14.0-28 and 6.14.0-29 have a bug that makes it so losetup fails when trying to create a loopdev for a squashfs file on a read only file system.
 LIVE_PACKAGES = ['casper', 'discover', 'laptop-detect', 'locales', 'mtools', 'binutils']
@@ -59,14 +59,6 @@ try:
     os.environ['HOME'] = '/root'
     os.environ['LC_ALL'] = 'C'
     os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-
-    open('/etc/casper.conf', 'w').write("""
-export USERNAME="passkill"
-export USERFULLNAME="PassKill live session user"
-export HOST="passkill"
-export BUILD_SYSTEM="Ubuntu"
-export FLAVOUR="PassKill"
-""".strip())
     
 
     print('[CHROOT] Updating package list...')
@@ -177,6 +169,26 @@ Pin-Priority: 501
         except Exception as e:
             traceback.print_exc()
             print("[CHROOT X] Failed to unblock unwanted packages.")
+            sys.exit(1)
+
+        
+        print('[CHROOT] Configuring casper...')
+        try:
+            open('/etc/casper.conf', 'w').write("""
+export USERNAME="passkill"
+export USERFULLNAME="PassKill live session user"
+export HOST="passkill"
+export BUILD_SYSTEM="Ubuntu"
+export FLAVOUR="PassKill"
+""".strip())
+            with open('/usr/sbin/casper-stop','r+') as f:
+                data=f.read().replace('Please remove the installation medium', 'Please remove the PassKill medium')
+                f.seek(0)
+                f.write(data)
+                f.truncate()
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to configure casper.")
             sys.exit(1)
 
 
@@ -331,7 +343,7 @@ Type=Application
             sys.exit(1)
         
 
-        print('[CHROOT] Registering .bashrc...')
+        print('[CHROOT] Registering profile script...')
         try:
             os.makedirs('/etc/profile.d', exist_ok=True)
             open('/etc/profile.d/passkill.sh', 'w').write("""
@@ -351,7 +363,7 @@ fi
 """.strip())
         except Exception as e:
             traceback.print_exc()
-            print("[CHROOT X] Failed to register .bashrc.")
+            print("[CHROOT X] Failed to register profile script.")
             sys.exit(1)
 
 

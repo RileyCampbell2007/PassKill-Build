@@ -26,6 +26,7 @@ print(f'[*] Beginning build for PassKill-{DATE}...')
 
 
 RELEASE_CODE_NAME="plucky"
+MIRROR="http://mirror.pilotfiber.com/ubuntu/"
 CHROOT_DIR=os.path.join(os.getcwd(), "chroot")
 IMAGE_DIR=os.path.join(os.getcwd(), "image")
 APT_CACHE=os.path.join(os.getcwd(), ".apt-cache")
@@ -64,8 +65,8 @@ try:
                             "--include=python3,python3-requests",
                             RELEASE_CODE_NAME, 
                             CHROOT_DIR, 
-                            "http://us.archive.ubuntu.com/ubuntu/"],
-                            check=True)
+                            MIRROR],
+                        check=True)
     except Exception as e:
         traceback.print_exc()
         print(f"[X] Failed to create chroot environment")
@@ -75,14 +76,14 @@ try:
     try:
         with open(os.path.join(CHROOT_DIR, "etc", "apt", "sources.list"), "w") as f:
             f.write(f"""
-deb http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME} main restricted universe multiverse
-deb-src http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME} main restricted universe multiverse
+deb {MIRROR} {RELEASE_CODE_NAME} main restricted universe multiverse
+deb-src {MIRROR} {RELEASE_CODE_NAME} main restricted universe multiverse
 
-deb http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME}-security main restricted universe multiverse
-deb-src http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME}-security main restricted universe multiverse
+deb {MIRROR} {RELEASE_CODE_NAME}-security main restricted universe multiverse
+deb-src {MIRROR} {RELEASE_CODE_NAME}-security main restricted universe multiverse
 
-deb http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME}-updates main restricted universe multiverse
-deb-src http://us.archive.ubuntu.com/ubuntu/ {RELEASE_CODE_NAME}-updates main restricted universe multiverse
+deb {MIRROR} {RELEASE_CODE_NAME}-updates main restricted universe multiverse
+deb-src {MIRROR} {RELEASE_CODE_NAME}-updates main restricted universe multiverse
 """.strip())
         
         subprocess.run(["cp", "chroot.py", os.path.join(CHROOT_DIR, "chroot.py")], check=True)
