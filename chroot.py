@@ -333,7 +333,8 @@ Type=Application
 
         print('[CHROOT] Registering .bashrc...')
         try:
-            open('/etc/skel/.bashrc', 'w').write("""
+            os.makedirs('/etc/profile.d', exist_ok=True)
+            open('/etc/profile.d/passkill.sh', 'w').write("""
 # Trust the Exit Gnome shortcut if it exists
 if [ -f "$HOME/Desktop/Exit Gnome.desktop" ]; then
   gio set "$HOME/Desktop/Exit Gnome.desktop" "metadata::trusted" true 2>/dev/null || true
