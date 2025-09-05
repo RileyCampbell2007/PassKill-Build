@@ -40,6 +40,14 @@ os.makedirs(APT_CACHE, exist_ok=True)
 os.makedirs(APT_LISTS, exist_ok=True)
 
 
+if os.path.exists(OUTPUT):
+    if input(f"Output file \"{OUTPUT}\" already exists, continue? [Y/n]: ").lower() == "y":
+        os.remove(OUTPUT)
+    else:
+        print("[*] Exiting...")
+        sys.exit(0)
+
+
 print("[*] Checking dependencies...")
 dependencies = ["debootstrap", "mksquashfs", "xorriso"]
 
