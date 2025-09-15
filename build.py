@@ -87,6 +87,9 @@ try:
     
     print("[*] Preparing chroot...")
     try:
+        with open(os.path.join(CHROOT_DIR, "release"), "w") as f:
+            f.write(ISO_VOLID)
+
         with open(os.path.join(CHROOT_DIR, "etc", "apt", "sources.list"), "w") as f:
             f.write(f"""
 deb {MIRROR} {RELEASE_CODE_NAME} main restricted universe multiverse
