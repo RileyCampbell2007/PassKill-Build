@@ -21,12 +21,8 @@ if os.geteuid() != 0:
 delta = time.time()
 
 DATE = datetime.datetime.now().strftime("%Y.%m.%d")
-
-print(f'[*] Beginning build for PassKill-{DATE}...')
-
-
 RELEASE_CODE_NAME="plucky"
-MIRROR="http://mirror.pilotfiber.com/ubuntu/"
+MIRROR="http://archive.ubuntu.com/ubuntu/"
 CHROOT_DIR=os.path.join(os.getcwd(), "chroot")
 IMAGE_DIR=os.path.join(os.getcwd(), "image")
 APT_CACHE=os.path.join(os.getcwd(), ".apt-cache")
@@ -34,6 +30,15 @@ APT_LISTS=os.path.join(os.getcwd(), ".apt-lists")
 ISO_VOLID=f"PassKill-{DATE}"
 OUTPUT=os.path.join(os.getcwd(), "build", f"PassKill-{DATE}.iso")
 MD5_OUTPUT=os.path.join(os.getcwd(), "build", f"PassKill-{DATE}.iso.md5")
+
+
+try:
+    from config import *
+except:
+    pass
+
+
+print(f'[*] Beginning build for {ISO_VOLID}...')
 
 
 os.makedirs(APT_CACHE, exist_ok=True)
