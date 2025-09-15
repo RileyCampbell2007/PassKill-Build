@@ -477,6 +477,26 @@ managed=false
             sys.exit(1)
 
 
+        print('[CHRROT] Setting environment variables...')
+        try:
+            environVars = {
+                "NEWT_COLORS_FILE": "/etc/newt/palette"
+            }
+            with open('/etc/environment', 'r') as environment:
+                data = environment.read()
+            if len(data) != 0 and not data.endswith('\n'):
+                with open('/etc/environment', 'a') as environment:
+                    environment.write('\n')
+            with open('/etc/environment', 'a') as environment:
+                for key, value in environVars.items():
+                    environment.write(f"{key}={value}\n")
+        except Exception as e:
+            traceback.print_exc()
+            print("[CHROOT X] Failed to set environment variables.")
+            sys.exit(1)
+
+
+
         print('[CHROOT] Updating initramfs...')
         try:
             subprocess.run(['update-initramfs', '-u'], check=True)
