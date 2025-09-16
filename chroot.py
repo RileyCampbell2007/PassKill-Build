@@ -522,10 +522,10 @@ managed=false
             open('/image/install/memtest86+.efi', 'wb').write(subprocess.run(['unzip', '-p', '/image/install/memtest86.zip', 'memtest64.efi'], check=True, stdout=subprocess.PIPE).stdout)
             os.remove('/image/install/memtest86.zip')
 
-            open('/image/ubuntu', 'w').write("")
+            open('/image/passkill', 'w').write("")
 
             open('/image/isolinux/grub.cfg', 'w').write("""
-search --set=root --file /ubuntu
+search --set=root --file /passkill
 
 insmod all_video
 
@@ -563,7 +563,7 @@ menuentry "Launch PassKill to RAM (Safe Graphics)" {
 
 grub_platform
 if [ "$grub_platform" = "efi" ]; then
-    menuentry "Test memory Memtest86+" {
+    menuentry "Test memory Memtest86+ (No Secure Boot)" {
         linux /install/memtest86+.efi
     }
 
@@ -571,7 +571,7 @@ if [ "$grub_platform" = "efi" ]; then
         fwsetup
     }
 else
-    menuentry "Test memory Memtest86+" {
+    menuentry "Test memory Memtest86+ (No Secure Boot)" {
         linux16 /install/memtest86+.bin
     }
 fi
