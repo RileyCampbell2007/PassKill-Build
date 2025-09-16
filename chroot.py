@@ -600,7 +600,7 @@ menuentry 'Boot from next volume' {
 
         print('[CHROOT] Creating image...')
         try:
-            subprocess.run(['cp', '/usr/lib/shim/shimx64.efi.signed.previous', '/image/isolinux/bootx64.efi'], check=True)
+            subprocess.run(['cp', '/usr/lib/shim/shimx64.efi.signed', '/image/isolinux/bootx64.efi'], check=True)
             subprocess.run(['cp', '/usr/lib/shim/mmx64.efi', '/image/isolinux/mmx64.efi'], check=True)
             subprocess.run(['cp', '/usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed', '/image/isolinux/grubx64.efi'], check=True)
 
