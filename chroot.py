@@ -21,7 +21,7 @@ LIVE_PACKAGES = ['casper', 'discover', 'laptop-detect', 'locales', 'mtools', 'bi
 NETWORK_PACKAGES = ['network-manager', 'net-tools', 'iw']
 BOOTLOADER_PACKAGES = ['grub-common','grub-gfxpayload-lists', 'grub-pc', 'grub-pc-bin', 'grub2-common', 'grub-efi-amd64-signed', 'shim-signed']
 WINDOW_MANAGER = ['plymouth', 'plymouth-label', 'plymouth-theme-ubuntu-text', 'ubuntu-gnome-desktop', 'ubuntu-gnome-wallpapers']
-TOOLS = ['gnome-disk-utility', 'gparted', 'udisks2', 'smartmontools', 'parted', 'gvfs-backends', 'gvfs-fuse', 'network-manager', 'network-manager-gnome', 'htop', 'iotop', 'ncdu', 'lsof', 'file', 'lshw', 'usbutils', 'clonezilla', 'testdisk', 'sleuthkit', 'binwalk', 'partimage', 'python3-hivex', 'python3-pip', 'firefox', 'git']
+TOOLS = ['gnome-disk-utility', 'gparted', 'udisks2', 'smartmontools', 'parted', 'gvfs-backends', 'gvfs-fuse', 'network-manager', 'network-manager-gnome', 'htop', 'iotop', 'ncdu', 'lsof', 'file', 'lshw', 'usbutils', 'clonezilla', 'testdisk', 'sleuthkit', 'binwalk', 'partimage', 'python3-hivex', 'python3-pip', 'firefox', 'git', 'gddrescue', 'ddrescueview']
 FILESYSTEMS = [
     # Core Linux/Unix
     "btrfs-progs", "xfsprogs", "f2fs-tools", "reiserfsprogs",
