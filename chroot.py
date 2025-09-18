@@ -513,8 +513,26 @@ managed=false
             os.makedirs('/image/isolinux', exist_ok=True)
             os.makedirs('/image/install', exist_ok=True)
 
-            subprocess.run(['cp', '/boot/vmlinuz', '/image/casper/vmlinuz'], check=True)
-            subprocess.run(['cp', '/boot/initrd.img', '/image/casper/initrd'], check=True)
+            initrd_options = []
+            vmlinuz_options = []
+
+            for path in os.listdir('/boot'):
+                if os.path.isdir(os.path.join('/boot', path)) or os.path.islink(os.path.join('/boot', path)):
+                    continue
+                
+                if path.startswith('initrd.img'):
+                    initrd_options.append(os.path.join('/boot', path))
+                if path.startswith('vmlinuz'):
+                    vmlinuz_options.append(os.path.join('/boot', path))
+            
+            initrd_options.sort(reverse=True)
+            vmlinuz_options.sort(reverse=True)
+
+            if not initrd_options or not vmlinuz_options:
+                raise Exception("Could not find initrd.img or vmlinuz in /boot")
+
+            subprocess.run(['cp', vmlinuz_options[0], '/image/casper/vmlinuz'], check=True)
+            subprocess.run(['cp', initrd_options[0], '/image/casper/initrd'], check=True)
 
             memtestUrl = 'https://memtest.org/download/v7.00/mt86plus_7.00.binaries.zip'
             memtestZip = requests.get(memtestUrl)
