@@ -661,6 +661,6 @@ except Exception as e:
 
 finally:
     print("[CHROOT] Cleaning up...")
-    subprocess.run(['umount', '/proc'], check=False)
-    subprocess.run(['umount', '/sys'], check=False)
-    subprocess.run(['umount', '/dev/pts'], check=False)
+    subprocess.run(['umount', '-l', '/proc'], check=False)
+    subprocess.run(['umount', '-l', '/sys'], check=False)
+    subprocess.run(['umount', '-l', '/dev/pts'], check=False)

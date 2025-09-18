@@ -146,13 +146,13 @@ deb-src {MIRROR} {RELEASE_CODE_NAME}-updates main restricted universe multiverse
         sys.exit(1)
     finally:
         print("[*] Unbinding chroot mounts...")
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "dev", "pts")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "proc")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "sys")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "dev")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "run")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "var", "cache", "apt", "archives")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "var", "lib", "apt", "lists")], check=False)
+        subprocess.run(["umount", "-l", os.path.join(CHROOT_DIR, "dev", "pts")], check=False)
+        subprocess.run(["umount", "-l", os.path.join(CHROOT_DIR, "proc")], check=False)
+        subprocess.run(["umount", "-l", os.path.join(CHROOT_DIR, "sys")], check=False)
+        subprocess.run(["umount", "-l", os.path.join(CHROOT_DIR, "dev")], check=False)
+        subprocess.run(["umount", "-l", os.path.join(CHROOT_DIR, "run")], check=False)
+        subprocess.run(["umount", "-l", os.path.join(CHROOT_DIR, "var", "cache", "apt", "archives")], check=False)
+        subprocess.run(["umount", "-l", os.path.join(CHROOT_DIR, "var", "lib", "apt", "lists")], check=False)
         os.remove(os.path.join(CHROOT_DIR, "chroot.py"))
     
     
@@ -248,16 +248,6 @@ finally:
     print("[*] Cleaning up...")
     if os.path.exists(IMAGE_DIR):
         shutil.rmtree(IMAGE_DIR)
-    
-    if os.path.exists(CHROOT_DIR):
-        time.sleep(5)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "dev", "pts")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "proc")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "sys")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "dev")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "run")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "var", "cache", "apt", "archives")], check=False)
-        subprocess.run(["umount", os.path.join(CHROOT_DIR, "var", "lib", "apt", "lists")], check=False)
 
         if os.path.ismount(os.path.join(CHROOT_DIR, "proc")):
             print("[X] Failed to unmount /proc, not cleaning up root jail.")
