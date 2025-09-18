@@ -16,7 +16,7 @@ except ImportError as e:
 
 APT_OPTIONS = ['-y']
 
-GENERIC_PACKAGES = ['ubuntu-standard', 'sudo', 'linux-image-6.14.0-27-generic', 'linux-modules-extra-6.14.0-27-generic', 'linux-firmware', 'linux-generic-hwe-24.04', 'linux-image-generic-hwe-24.04'] # The kernel is pinned to 6.14.0-27-generic because 6.14.0-28 and 6.14.0-29 have a bug that makes it so losetup fails when trying to create a loopdev for a squashfs file on a read only file system.
+GENERIC_PACKAGES = ['ubuntu-standard', 'sudo', 'linux-image-6.14.0-27-generic', 'linux-modules-extra-6.14.0-27-generic', 'linux-firmware', 'linux-generic-hwe-24.04=6.14.0-27.27'] # The kernel is pinned to 6.14.0-27-generic because 6.14.0-28 and 6.14.0-29 have a bug that makes it so losetup fails when trying to create a loopdev for a squashfs file on a read only file system.
 HARDWARE = ['amd64-microcode', 'intel-microcode', 'firmware-sof-signed', 'thermald']
 LIVE_PACKAGES = ['casper', 'discover', 'laptop-detect', 'locales', 'mtools', 'binutils']
 NETWORK_PACKAGES = ['network-manager', 'net-tools', 'iw']
