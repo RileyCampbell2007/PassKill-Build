@@ -39,12 +39,12 @@ FILESYSTEMS = [
 
     # Special / Archival / Misc
     "squashfs-tools", "erofs-utils", "cryptsetup",
-    "mtd-utils", "fuseiso", "archivemount", "dmraid"
+    "mtd-utils", "fuseiso", "archivemount"
 ]
 GRAPHICS = ["xserver-xorg-video-nouveau", "mesa-vulkan-drivers", "xserver-xorg-video-amdgpu"]
 
 
-PACKAGES = GENERIC_PACKAGES + LIVE_PACKAGES + NETWORK_PACKAGES + BOOTLOADER_PACKAGES + WINDOW_MANAGER + TOOLS + FILESYSTEMS + GRAPHICS
+PACKAGES = GENERIC_PACKAGES + LIVE_PACKAGES + NETWORK_PACKAGES + BOOTLOADER_PACKAGES + WINDOW_MANAGER + TOOLS + FILESYSTEMS + GRAPHICS + HARDWARE
 
 BLOCKED_PACKAGES = ['libreoffice*', 'thunderbird*', 'rhythmbox*', 'gnome-mahjongg', 'gnome-mines', 'gnome-sudoku', 'aisleriot', 'cheese', 'simple-scan', 'transmission*', 'remmina*', 'totem*', 'shotwell*', 'hexchat*', 'deja-dup*', 'ubuntu-docs', 'gnome-user-docs', 'snapd', 'plymouth-themes', 'plymouth-theme', 'plymouth-theme-spinner', 'gnome-snapshot']
 
