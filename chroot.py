@@ -46,7 +46,7 @@ GRAPHICS = ["xserver-xorg-video-nouveau", "mesa-vulkan-drivers", "xserver-xorg-v
 
 PACKAGES = GENERIC_PACKAGES + LIVE_PACKAGES + NETWORK_PACKAGES + BOOTLOADER_PACKAGES + WINDOW_MANAGER + TOOLS + FILESYSTEMS + GRAPHICS + HARDWARE
 
-BLOCKED_PACKAGES = ['libreoffice*', 'thunderbird*', 'rhythmbox*', 'gnome-mahjongg', 'gnome-mines', 'gnome-sudoku', 'aisleriot', 'cheese', 'simple-scan', 'transmission*', 'remmina*', 'totem*', 'shotwell*', 'hexchat*', 'deja-dup*', 'ubuntu-docs', 'gnome-user-docs', 'snapd', 'plymouth-themes', 'plymouth-theme', 'plymouth-theme-spinner', 'gnome-snapshot']
+BLOCKED_PACKAGES = ['libreoffice*', 'thunderbird*', 'rhythmbox*', 'gnome-mahjongg', 'gnome-mines', 'gnome-sudoku', 'aisleriot', 'cheese', 'simple-scan', 'transmission*', 'remmina*', 'totem*', 'shotwell*', 'hexchat*', 'deja-dup*', 'ubuntu-docs', 'gnome-user-docs', 'snapd', 'plymouth-themes', 'plymouth-theme', 'plymouth-theme-spinner', 'gnome-snapshot', 'cryptsetup-initramfs']
 
 
 print('[CHROOT] Setting up chroot...')
