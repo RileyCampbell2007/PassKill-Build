@@ -248,6 +248,8 @@ finally:
     print("[*] Cleaning up...")
     if os.path.exists(IMAGE_DIR):
         shutil.rmtree(IMAGE_DIR)
+    
+    if os.path.exists(CHROOT_DIR):
 
         if os.path.ismount(os.path.join(CHROOT_DIR, "proc")):
             print("[X] Failed to unmount /proc, not cleaning up root jail.")
