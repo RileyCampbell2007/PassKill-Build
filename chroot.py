@@ -513,8 +513,8 @@ managed=false
             os.makedirs('/image/isolinux', exist_ok=True)
             os.makedirs('/image/install', exist_ok=True)
 
-            subprocess.run(['/bin/bash', '-c', 'cp /boot/vmlinuz /image/casper/vmlinuz'], check=True)
-            subprocess.run(['/bin/bash', '-c', 'cp /boot/initrd.img /image/casper/initrd'], check=True)
+            subprocess.run(['cp', '/boot/vmlinuz', '/image/casper/vmlinuz'], check=True)
+            subprocess.run(['cp', '/boot/initrd.img', '/image/casper/initrd'], check=True)
 
             memtestUrl = 'https://memtest.org/download/v7.00/mt86plus_7.00.binaries.zip'
             memtestZip = requests.get(memtestUrl)
