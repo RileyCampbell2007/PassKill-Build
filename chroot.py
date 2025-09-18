@@ -16,16 +16,17 @@ except ImportError as e:
 
 APT_OPTIONS = ['-y']
 
-GENERIC_PACKAGES = ['ubuntu-standard', 'sudo', 'linux-image-6.14.0-27-generic', 'linux-modules-extra-6.14.0-27-generic'] # The kernel is pinned to 6.14.0-27-generic because 6.14.0-28 and 6.14.0-29 have a bug that makes it so losetup fails when trying to create a loopdev for a squashfs file on a read only file system.
+GENERIC_PACKAGES = ['ubuntu-standard', 'sudo', 'linux-image-6.14.0-27-generic', 'linux-modules-extra-6.14.0-27-generic', 'linux-firmware', 'linux-generic-hwe-24.04', 'linux-image-generic-hwe-24.04'] # The kernel is pinned to 6.14.0-27-generic because 6.14.0-28 and 6.14.0-29 have a bug that makes it so losetup fails when trying to create a loopdev for a squashfs file on a read only file system.
+HARDWARE = ['amd64-microcode', 'intel-microcode', 'firmware-sof-signed', 'thermald']
 LIVE_PACKAGES = ['casper', 'discover', 'laptop-detect', 'locales', 'mtools', 'binutils']
 NETWORK_PACKAGES = ['network-manager', 'net-tools', 'iw']
 BOOTLOADER_PACKAGES = ['grub-common','grub-gfxpayload-lists', 'grub-pc', 'grub-pc-bin', 'grub2-common', 'grub-efi-amd64-signed', 'shim-signed']
 WINDOW_MANAGER = ['plymouth', 'plymouth-label', 'plymouth-theme-ubuntu-text', 'ubuntu-gnome-desktop', 'ubuntu-gnome-wallpapers']
-TOOLS = ['gnome-disk-utility', 'gparted', 'udisks2', 'smartmontools', 'parted', 'gvfs-backends', 'gvfs-fuse', 'network-manager', 'network-manager-gnome', 'htop', 'iotop', 'ncdu', 'lsof', 'file', 'lshw', 'usbutils', 'clonezilla', 'testdisk', 'sleuthkit', 'binwalk', 'partimage', 'python3-hivex', 'python3-pip', 'firefox', 'git', 'gddrescue', 'ddrescueview']
+TOOLS = ['gnome-disk-utility', 'gparted', 'udisks2', 'smartmontools', 'parted', 'gvfs-backends', 'gvfs-fuse', 'network-manager', 'network-manager-gnome', 'htop', 'iotop', 'ncdu', 'lsof', 'file', 'lshw', 'usbutils', 'clonezilla', 'testdisk', 'sleuthkit', 'binwalk', 'partimage', 'python3-hivex', 'python3-pip', 'firefox', 'git', 'gddrescue', 'ddrescueview', 'apt-utils', 'iputils-ping', 'kpartx']
 FILESYSTEMS = [
     # Core Linux/Unix
     "btrfs-progs", "xfsprogs", "f2fs-tools", "reiserfsprogs",
-    "jfsutils", "nilfs-tools", "zfsutils-linux",
+    "jfsutils", "nilfs-tools", "zfsutils-linux", "lvm2", "mdadm",
 
     # Windows and cross-platform
     "ntfs-3g", "dosfstools", "exfatprogs",
@@ -37,8 +38,8 @@ FILESYSTEMS = [
     "davfs2", "fuse3",
 
     # Special / Archival / Misc
-    "squashfs-tools", "erofs-utils",
-    "mtd-utils", "fuseiso", "archivemount",
+    "squashfs-tools", "erofs-utils", "cryptsetup",
+    "mtd-utils", "fuseiso", "archivemount", "dmraid"
 ]
 GRAPHICS = ["xserver-xorg-video-nouveau", "mesa-vulkan-drivers", "xserver-xorg-video-amdgpu"]
 
