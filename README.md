@@ -24,7 +24,7 @@ _Building is only required if you are customizing the ISO yourself._
     Arch
 
     ```bash
-    sudo pacman -S debootstrap python3 squashfs-tools
+    sudo pacman -S debootstrap python3 squashfs-tools xorriso
     ```
 
 2. **Clone Build Repository**:
