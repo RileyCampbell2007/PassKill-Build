@@ -11,20 +11,20 @@ _Building is only required if you are customizing the ISO yourself._
     Ubuntu/Debian
 
     ```bash
-    sudo apt-get install debootstrap python3
+    sudo apt-get install debootstrap python3 squashfs-tools xorriso
     ```
 
     RHEL/Fedora
 
     ```bash
-    sudo dnf install debootstrap python3
+    sudo dnf install debootstrap python3 squashfs-tools xorriso
     ```
     *RHEL may need the Extra Packages for Enterprise Linux repository, install the `epel-release` package before installing debootstrap*
 
     Arch
 
     ```bash
-    sudo pacman -S debootstrap python3
+    sudo pacman -S debootstrap python3 squashfs-tools
     ```
 
 2. **Clone Build Repository**:
